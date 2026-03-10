@@ -44,7 +44,7 @@ SecureRAG-Health is a production-ready system that enables hospital staff to que
 │                       GENERATION LAYER                              │
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────┐    │
-│  │  Anthropic Claude (claude-sonnet-4-20250514)                         │    │
+│  │  OpenAI GPT-4o                                                  │    │
 │  │  System prompt enforces context-only answers                 │    │
 │  │  No raw chunks/IDs in response — only titles & scores        │    │
 │  └─────────────────────────────────────────────────────────────┘    │
@@ -64,7 +64,7 @@ SecureRAG-Health is a production-ready system that enables hospital staff to que
 ### Prerequisites
 
 - Docker & Docker Compose
-- An Anthropic API key
+- An OpenAI API key
 
 ### Setup
 
@@ -72,7 +72,7 @@ SecureRAG-Health is a production-ready system that enables hospital staff to que
 # 1. Clone and configure
 cd securerag-health
 cp .env.example .env
-# Edit .env → fill in ANTHROPIC_API_KEY
+# Edit .env → fill in OPENAI_API_KEY
 
 # 2. Start all services
 docker compose up -d
@@ -197,7 +197,7 @@ pytest tests/test_ingestion.py -v
 | Auth DB         | PostgreSQL 16                            |
 | Authorization   | SpiceDB (ReBAC)                          |
 | Cache           | Redis 7                                  |
-| LLM             | Anthropic Claude (claude-sonnet-4-20250514)       |
+| LLM             | OpenAI GPT-4o                            |
 | Embeddings      | sentence-transformers (all-MiniLM-L6-v2) |
 | Identity        | JWT (python-jose)                        |
 | Migrations      | Alembic                                  |

@@ -21,9 +21,9 @@ class Settings(BaseSettings):
     # ── Redis ────────────────────────────────────────────────────
     REDIS_URL: str = "redis://localhost:6379/0"
 
-    # ── Anthropic LLM ────────────────────────────────────────────
-    ANTHROPIC_API_KEY: str = "sk-ant-placeholder"
-    LLM_MODEL: str = "claude-sonnet-4-20250514"
+    # ── OpenAI LLM ────────────────────────────────────────────────
+    OPENAI_API_KEY: str = "sk-placeholder"
+    LLM_MODEL: str = "gpt-4o"
     LLM_MAX_TOKENS: int = 1500
 
     # ── JWT ──────────────────────────────────────────────────────

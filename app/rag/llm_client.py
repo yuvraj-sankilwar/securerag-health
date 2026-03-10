@@ -1,80 +1,69 @@
-"""Anthropic Claude LLM client for response generation."""
+"""OpenAI GPT LLM client for response generation."""
 
 import logging
 
-import anthropic
+from openai import AsyncOpenAI, AuthenticationError, RateLimitError
 
 logger = logging.getLogger(__name__)
 
 
-class AnthropicLLMClient:
+class OpenAILLMClient:
     """
-    Async client for Anthropic Claude API.
+    Async client for OpenAI Chat Completions API.
 
     Handles message generation with system prompt and context messages.
     """
 
     def __init__(self, api_key: str, model: str, max_tokens: int):
         """
-        Initialize the Anthropic client.
+        Initialize the OpenAI client.
 
         Args:
-            api_key: Anthropic API key
-            model: Model identifier (e.g., "claude-sonnet-4-20250514")
+            api_key: OpenAI API key
+            model: Model identifier (e.g., "gpt-4o")
             max_tokens: Maximum tokens in the response
         """
-        self.client = anthropic.AsyncAnthropic(api_key=api_key)
+        self.client = AsyncOpenAI(api_key=api_key)
         self.model = model
         self.max_tokens = max_tokens
 
     async def generate(self, messages: list[dict]) -> str:
         """
-        Generate a response from Claude using the provided messages.
+        Generate a response from OpenAI using the provided messages.
 
-        The first message should have role "system" (extracted as the system parameter),
-        and remaining messages are passed as the messages parameter.
+        Messages are passed directly — the OpenAI Chat Completions API
+        natively supports the system/user/assistant role format.
 
         Args:
             messages: List of message dicts with "role" and "content" keys.
                       First message should be the system message.
 
         Returns:
-            Generated text response from Claude
+            Generated text response from OpenAI
 
         Raises:
             Exception: On API errors (logged and re-raised)
         """
         try:
-            # Extract system message
-            system_message = ""
-            user_messages = []
-
-            for msg in messages:
-                if msg["role"] == "system":
-                    system_message = msg["content"]
-                else:
-                    user_messages.append(msg)
-
-            response = await self.client.messages.create(
+            response = await self.client.chat.completions.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
-                system=system_message,
-                messages=user_messages,
+                messages=messages,
             )
 
-            generated_text = response.content[0].text
+            generated_text = response.choices[0].message.content
             logger.info(
                 f"LLM generated response ({len(generated_text)} chars, "
-                f"input_tokens={response.usage.input_tokens}, "
-                f"output_tokens={response.usage.output_tokens})"
+                f"prompt_tokens={response.usage.prompt_tokens}, "
+                f"completion_tokens={response.usage.completion_tokens})"
             )
             return generated_text
 
-        except anthropic.AuthenticationError:
-            logger.error("Anthropic API authentication failed — check ANTHROPIC_API_KEY")
+        except AuthenticationError:
+            logger.error("OpenAI API authentication failed — check OPENAI_API_KEY")
             raise
-        except anthropic.RateLimitError:
-            logger.warning("Anthropic API rate limit exceeded")
+        except RateLimitError:
+            logger.warning("OpenAI API rate limit exceeded")
             raise
         except Exception as e:
             logger.error(f"LLM generation failed: {e}", exc_info=True)

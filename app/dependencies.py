@@ -5,14 +5,14 @@ from typing import Optional
 
 from app.authz.spicedb_client import SpiceDBClient
 from app.config import settings
-from app.rag.llm_client import AnthropicLLMClient
+from app.rag.llm_client import OpenAILLMClient
 
 logger = logging.getLogger(__name__)
 
 # ── Singleton instances ──────────────────────────────────────────
 _spicedb_client: Optional[SpiceDBClient] = None
 _embedding_model = None
-_llm_client: Optional[AnthropicLLMClient] = None
+_llm_client: Optional[OpenAILLMClient] = None
 
 
 def init_spicedb_client() -> SpiceDBClient:
@@ -52,18 +52,18 @@ def get_embedding_model():
     return _embedding_model
 
 
-def init_llm_client() -> AnthropicLLMClient:
-    """Initialize and cache the Anthropic LLM client."""
+def init_llm_client() -> OpenAILLMClient:
+    """Initialize and cache the OpenAI LLM client."""
     global _llm_client
-    _llm_client = AnthropicLLMClient(
-        api_key=settings.ANTHROPIC_API_KEY,
+    _llm_client = OpenAILLMClient(
+        api_key=settings.OPENAI_API_KEY,
         model=settings.LLM_MODEL,
         max_tokens=settings.LLM_MAX_TOKENS,
     )
     return _llm_client
 
 
-def get_llm_client() -> AnthropicLLMClient:
+def get_llm_client() -> OpenAILLMClient:
     """Get the cached LLM client instance."""
     global _llm_client
     if _llm_client is None:

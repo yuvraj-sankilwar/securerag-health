@@ -5,7 +5,7 @@ from app.rag.schemas import ChunkResult
 
 def build_prompt(query: str, chunks: list[ChunkResult], role_name: str, user_name: str) -> list[dict]:
     """
-    Build the messages list for the Anthropic Claude API.
+    Build the messages list for the OpenAI Chat Completions API.
 
     Constructs a system prompt that constrains the LLM to only use provided context,
     and a user message that includes the retrieved chunks and the original query.
@@ -17,7 +17,7 @@ def build_prompt(query: str, chunks: list[ChunkResult], role_name: str, user_nam
         user_name: The user's display name
 
     Returns:
-        List of message dicts compatible with the Anthropic API:
+        List of message dicts compatible with the OpenAI Chat Completions API:
         [{"role": "system", "content": "..."}, {"role": "user", "content": "..."}]
     """
     # System message — constraining the LLM behavior

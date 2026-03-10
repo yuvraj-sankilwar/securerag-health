@@ -14,7 +14,7 @@ os.environ.setdefault("DATABASE_SYNC_URL", "postgresql+psycopg2://rag_app_user:a
 os.environ.setdefault("SPICEDB_ENDPOINT", "localhost:50051")
 os.environ.setdefault("SPICEDB_PRESHARED_KEY", "dev-secret-key")
 os.environ.setdefault("REDIS_URL", "redis://localhost:6379/0")
-os.environ.setdefault("ANTHROPIC_API_KEY", "sk-ant-test-key")
+os.environ.setdefault("OPENAI_API_KEY", "sk-test-key")
 os.environ.setdefault("JWT_SECRET_KEY", "test-secret-key-for-testing-only")
 
 from app.main import app  # noqa: E402

@@ -63,7 +63,7 @@ async def lifespan(app: FastAPI):
     # 4. Initialize LLM client
     try:
         init_llm_client()
-        logger.info("Anthropic LLM client initialized")
+        logger.info("OpenAI LLM client initialized")
     except Exception as e:
         logger.warning(f"LLM client initialization failed: {e}")
 

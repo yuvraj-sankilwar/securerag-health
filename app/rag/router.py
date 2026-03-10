@@ -5,14 +5,14 @@ import hashlib
 import logging
 import time
 
-from app.audit.logger import write_audit_log
-from app.dependencies import get_embedding_model, get_llm_client, get_spicedb_client
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.audit.logger import write_audit_log
 from app.auth.jwt_handler import get_current_user
 from app.auth.schemas import TokenPayload
 from app.db.session import get_db
+from app.dependencies import get_embedding_model, get_llm_client, get_spicedb_client
 from app.rag.prompt_builder import build_prompt
 from app.rag.retriever import RAGRetriever
 from app.rag.schemas import RAGQueryRequest, RAGQueryResponse, SourceReference
@@ -33,7 +33,7 @@ async def rag_query(
 
     1. Retrieves authorized document chunks via triple-layer security
     2. Builds a constrained prompt with retrieved context
-    3. Generates a response using Claude
+    3. Generates a response using OpenAI
     4. Writes an async audit log
     5. Returns the answer with source references (no raw chunk text)
     """
