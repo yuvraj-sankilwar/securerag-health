@@ -1,0 +1,17 @@
+definition user {}
+
+definition role {
+    relation member: user
+}
+
+definition tenant {
+    relation member: user
+}
+
+definition document {
+    relation tenant: tenant
+    relation authorized_role: role
+    relation owner: user
+
+    permission view = authorized_role->member + owner
+}
